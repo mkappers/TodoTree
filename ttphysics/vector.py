@@ -1,63 +1,102 @@
 # https://www.gamedev.net/forums/topic/486122-is-there-a-built-in-python-vector-class/
 from math import sqrt
 
+import operator
+
 class Vector:
-    def __init__(self, x = 0, y = 0):
-        self.x = x
-        self.y = y
+    def __init__(self, *args):
+        self.itercount = 0
+        self.dimensions = args
 
     def __add__(self, other):
-        return Vector(self.x + other.x, self.y + other.y)
+        return type(self)(*tuple(map(operator.add, self.dimensions, other.dimensions)))
 
     def __sub__(self, other):
-        return Vector(self.x - other.x, self.y - other.y)
+        return type(self)(*tuple(map(operator.sub, self.dimensions, other.dimensions)))
 
     def __iadd__(self, other):
-        self.x += other.x
-        self.y += other.y
+        self.dimensions = (self + other).dimensions
         return self
 
     def __isub__(self, other):
-        self.x -= other.x
-        self.y -= other.y
+        self.dimensions = (self - other).dimensions
         return self
 
     def __truediv__(self, value):
-        return Vector(self.x / value, self.y / value)
+        return type(self)(*tuple(map(lambda x: x / value, self.dimensions)))
 
     def __mul__(self, value):
-        return Vector(self.x * value, self.y * value)
+        return type(self)(*tuple(map(lambda x: x * value, self.dimensions)))
 
     def __idiv__(self, value):
-        self.x /= value
-        self.y /= value
+        self.dimensions = (self / value).dimensions
         return self
 
     def __imul__(self, value):
-        self.x *= value
-        self.y *= value
+        self.dimensions = (self * value).dimensions
         return self
 
     def __eq__(self, other):
-        if self.x == other.x and self.y == other.y:
-            return True
-        else:
+        if len(self) != len(other):
             return False
+
+        for i,a in enumerate(other):
+            if a != self.dimensions[i]:
+                return False
+
+        return True
 
     def __ne__(self, other):
-        if self.x != other.x or self.y != other.y:
+        if len(self) != len(other):
             return True
-        else:
-            return False
+
+        for i,a in enumerate(other):
+            if a != self.dimensions[i]:
+                return True
+
+        return False
+
+    def __len__(self):
+        return len(self.dimensions)
 
     def __str__(self):
-        return "(" + str(self.x) + "," + str(self.y) + ")"
+        return str(self.dimensions)
+
+    # Make vector iterable
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        self.itercount += 1
+
+        try:
+            return self.dimensions[self.itercount - 1]
+        except IndexError:
+            self.itercount = 0
+            raise StopIteration
 
     def magnitude(self):
-        return sqrt(self.x ** 2 + self.y ** 2)
+        return sqrt(sum(map(lambda x: x**2, self.dimensions)))
 
     def normalize(self):
-        if self.x == 0 and self.y == 0:
-            return Vector()
+        if len(self) == 0:
+            return type(self)()
+
+        if self.magnitude() == 0:
+            return type(self)(*self.dimensions)
 
         return self / self.magnitude()
+
+
+class Vector2(Vector):
+    def __init__(self, x = 0, y = 0):
+        dimensions = (x,y)
+        super().__init__(*dimensions)
+
+    @property
+    def x(self):
+        return self.dimensions[0]
+
+    @property
+    def y(self):
+        return self.dimensions[1]
