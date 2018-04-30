@@ -204,5 +204,24 @@ class TestVector2(unittest.TestCase):
         self.assertTrue(b.normalize() == Vector2())
         self.assertTrue(c.normalize() == Vector2(0))
 
+    def test_get_set(self):
+        a = Vector2(1,2)
+
+        self.assertTrue(a.x == 1)
+        self.assertTrue(a.y == 2)
+
+        a.setX(3)
+        a.setY(4)
+
+        self.assertTrue(a.x == 3)
+        self.assertTrue(a.y == 4)
+
+        a.setDimensions(5, 6)
+
+        self.assertTrue(a.x == 5)
+        self.assertTrue(a.y == 6)
+        self.assertTrue(a.dimensions == (5,6))
+
+
 if __name__ == '__main__':
     unittest.main()

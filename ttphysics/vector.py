@@ -1,4 +1,6 @@
 # https://www.gamedev.net/forums/topic/486122-is-there-a-built-in-python-vector-class/
+# This file contains a generic vector implementation and an vector2 class with x and y properties
+
 from math import sqrt
 
 import operator
@@ -100,3 +102,12 @@ class Vector2(Vector):
     @property
     def y(self):
         return self.dimensions[1]
+
+    def setX(self, x):
+        self.dimensions = (x, self.y)
+
+    def setY(self, y):
+        self.dimensions = (self.x, y)
+
+    def setDimensions(self, x, y):
+        self.dimensions = (x, y)
