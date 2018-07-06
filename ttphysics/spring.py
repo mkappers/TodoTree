@@ -1,13 +1,27 @@
 # File for the spring class
 
 # Spring from one side?
+class Edge:
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
 
-class Spring():
-    def __init__(self, length = None, stiffness = None, damping = None, edge = None):
+    def magnitude(self):
+        return self.direction().magnitude()
+
+    def normalize(self):
+        return self.direction().normalize()
+
+    def direction(self):
+        return self.b.position - self.a.position
+
+
+class Spring(Edge):
+    def __init__(self, a, b, length, stiffness = 1, damping = 1):
+        super().__init__(self, a, b)
         self.length = length
         self.stiffness = stiffness
         self.damping = damping
-        self.edge = edge
 
     def getrestoringforce(self):
         displacement = self.edge.magnitude() - self.length
@@ -20,11 +34,3 @@ class Spring():
 
     def getdampingforce(self):
         return self.edge.b.velocity * -self.damping
-
-    @property
-    def a(self):
-        return self.edge.a
-
-    @property
-    def b(self):
-        return self.edge.b

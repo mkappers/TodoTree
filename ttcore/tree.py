@@ -1,6 +1,7 @@
 # https://en.wikipedia.org/wiki/Tree_(data_structure)
 # https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
 
+
 class TreeNode():
     def __init__(self, parent = None, children = None):
         """Initialize a tree node.
