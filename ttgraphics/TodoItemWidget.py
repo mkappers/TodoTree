@@ -2,10 +2,10 @@
 
 import TTConstants as TTC
 
-from ttcore.TodoItemCore import TodoItemCore
+from ttcore import TodoItem
 from TTGraphics import getAnchoredGeometryRect
-from ttwidgets.TodoIconWidget import TodoIconWidget
-from ttwidgets.TodoTextWidget import TodoTextWidget
+from ttgraphics.TodoIconWidget import TodoIconWidget
+from ttgraphics.TodoTextWidget import TodoTextWidget
 
 from PyQt5.QtWidgets import QWidget
 
@@ -19,7 +19,7 @@ class TodoItemWidget(QWidget):
     iconwidget = None
     textwidget = None
 
-    def __init__(self, parent, todoitem = TodoItemCore()):
+    def __init__(self, parent, todoitem):
         super().__init__(parent)
 
         self.todoitem = todoitem

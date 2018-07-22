@@ -7,6 +7,14 @@ from ttphysics.vector import Vector2
 
 class Node:
     def __init__(self, mass = 1, position = None, velocity = None, acceleration = None):
+        """Initialize a physics node.
+
+        Keyword arguments:
+        mass -- mass of this node (default 1)
+        position -- (Vector2) position of this node (default Vector2())
+        velocity -- (Vector2) position of this node (default Vector2())
+        acceleration -- (Vector2) position of this node (default Vector2())
+        """
         self.mass = mass
         self.position = position
         self.velocity = velocity
@@ -20,8 +28,19 @@ class Node:
             self.acceleration = Vector2()
 
     def applyForce(self, force):
+        """Apply force to this node.
+
+        Keyword arguments:
+        force -- (Vector2) the force to be applied to this node
+        """
         if isinstance(force, Vector2):
             self.acceleration += force / self.mass
+
+    def setX(self, x):
+        self.position.setX(x)
+
+    def setY(self, y):
+        self.position.setY(y)
 
     def setPosition(self, x, y):
         self.position.setX(x)

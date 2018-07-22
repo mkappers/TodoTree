@@ -1,5 +1,7 @@
 from ttcore.TodoItemCore import TodoItemCore
 
+# Is this class necessary? Maybe for search functions or sumt'n?
+
 class CoreSystem:
     def __init__(self):
         self.todoitems = []

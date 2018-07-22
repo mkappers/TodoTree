@@ -1,8 +1,21 @@
-# This file contains the most basic todoitem properties: the item state and item description
+from enum import Enum
+
 from ttcore.tree import TreeNode
 
+class TodoItemState(Enum):
+    TODO = 1
+    DONE = 2
+    PARENTDONE = 3
+
+
 class TodoItem():
-    def __init__(self, state = None, description = None):
+    def __init__(self, state = TodoItemState.DONE, description = None):
+        """Initialize a TodoItem.
+
+        Keyword arguments:
+        state -- (TodoItemState) the state of this item (default DONE)
+        description -- (String) the description of this item (default None)
+        """
         self.__state = state
         self.__description = description
 

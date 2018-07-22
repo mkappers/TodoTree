@@ -8,11 +8,11 @@ from PyQt5.QtWidgets import QWidget
 
 class TodoIconWidget(QWidget):
     __state = None
-    qpainter = QPainter()
 
     todo_icon = None
     done_icon = None
 
+    qpainter = QPainter()
     updateTimer = QTimer()
 
     __size = None
@@ -34,6 +34,7 @@ class TodoIconWidget(QWidget):
         self.done_icon = HollowRoundedRectanglePath(width, height, self.curdonerim)
 
         super().setGeometry(getAnchoredGeometryRect(x,y,width,height,anchor))
+        self.show()
 
     def paintEvent(self, event):
         self.qpainter.begin(self)
@@ -49,7 +50,6 @@ class TodoIconWidget(QWidget):
         self.qpainter.end()
 
     def mousePressEvent(self, QMouseEvent):
-        print("Click!")
         if self.__state == TTC.TodoItemState.TODO:
             self.__state = TTC.TodoItemState.DONE
         elif self.__state == TTC.TodoItemState.DONE:

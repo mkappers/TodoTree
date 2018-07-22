@@ -3,17 +3,17 @@ from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QWidget
 
 class CanvasSystem(QWidget):
-    def __init__(self):
+    def __init__(self, x = 600, y = 400, width = 400, height = 400):
         super().__init__()
         self.qpainter = QPainter()
 
         self.pointrefs = []
         self.linerefs = []
 
-        self.initWindow()
+        self.initWindow(x, y, width, height)
 
-    def initWindow(self):
-        self.setGeometry(600, 400, 400, 400)
+    def initWindow(self, x, y, width, height):
+        self.setGeometry(x, y, width, height)
         self.show()
 
     def addPointReference(self, position):

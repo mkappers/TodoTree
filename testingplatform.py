@@ -3,9 +3,8 @@ import sys
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QApplication
 
-from CoreSystem import CoreSystem
-from PhysicsSystem import PhysicsSystem
-from CanvasSystem import CanvasSystem
+from ttcore.system import CoreSystem
+from ttgraphics.canvas import CanvasSystem
 
 class TestingPlatform:
     def __init__(self):
