@@ -13,29 +13,45 @@ from PyQt5.QtWidgets import QWidget
 # internally
 
 # Should just have Icon, State, and Text
+# TodoItemWidget anchor is center of icon
+
+from ttcore import TodoNode
 
 class TodoItemWidget(QWidget):
-    todoitem = None
-    iconwidget = None
-    textwidget = None
+    iconsize = 30
 
-    def __init__(self, parent, todoitem):
+    def __init__(self, parent, state, description, nodeparent, nodechildren, x, y):
         super().__init__(parent)
 
-        self.todoitem = todoitem
-
-        self.iconwidget = TodoIconWidget(self, todoitem.state)
-        self.textwidget = TodoTextWidget(self, todoitem.description)
+        self.todonode = TodoNode(state, description, nodeparent, nodechildren)
+        self.iconwidget = TodoIconWidget(self, state)
+        self.textwidget = TodoTextWidget(self, description)
         self.textwidget.update()
 
-    def setPosition(self, x, y, anchor = TTC.GeometryAnchor.TOP_CENTER):
-        width = max(TTC.ICON_SIZE, self.textwidget.width())
-        height = TTC.ICON_SIZE + self.textwidget.height() + 5
+        self.textwidget.textChanged.connect(self.updateTextWidgetSize)
 
-        self.iconwidget.setGeometry(TTC.GeometryAnchor.TOP_CENTER, width / 2, 0, TTC.ICON_SIZE, TTC.ICON_SIZE)
-        self.textwidget.setGeometry(TTC.GeometryAnchor.BOTTOM_CENTER, width / 2, height, self.textwidget.width(), self.textwidget.height())
+        self.ox = x
+        self.oy = y
+        self.setPosition(x, y)
+        self.show()
 
-        super().setGeometry(getAnchoredGeometryRect(x,y,width,height,anchor))
+    @classmethod
+    def fromTodoItem(cls, parent, todoitem, x, y):
+        return cls(parent, todoitem.state, todoitem.description, None, None, x, y)
+
+    @classmethod
+    def fromTodoNode(cls, parent, todonode, x, y):
+        return cls(parent, todonode.state, todonode.description, todonode.parent, todonode.children)
+
+    def setPosition(self, x, y):
+        width = max(self.iconsize, self.textwidget.width())
+        height = self.iconsize + self.textwidget.height() + 4
+
+        #self.iconwidget.setGeometry(0, 0, self.iconsize, self.iconsize)
+        self.iconwidget.setGeometry((width / 2) - (self.iconsize / 2), 0, self.iconsize, self.iconsize)
+        self.textwidget.setGeometry(0, self.iconsize + 4, self.textwidget.width(), self.textwidget.height())
+
+        super().setGeometry(x - (width / 2), y - (self.iconsize / 2), width, height)
 
     # def __update_size(self):
     #     ir = self.icon.geometry()
@@ -43,6 +59,9 @@ class TodoItemWidget(QWidget):
     #
     #     self.width = max(ir.width(), tr.width())
     #     self.height = max(ir.height(), tr.height())
+
+    def updateTextWidgetSize(self):
+        self.setPosition(self.ox,self.oy)
 
     def state(self):
         return self.iconwidget.state

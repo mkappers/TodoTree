@@ -10,9 +10,11 @@ class TodoTextWidget(QTextEdit):
 
     def __init__(self, parent, text):
         super().__init__(parent)
+        # Margin is only the first thing to remember, there's also line-breaks, line-distance,
+        # word-wrap (and the empty space it creates), etc.
+        self.margin = self.document().documentMargin()
 
         self.initTodoText(text)
-        print(self.contentsRect())
 
     def initTodoText(self, text):
         qfm = QFontMetrics(self.font)
@@ -23,6 +25,13 @@ class TodoTextWidget(QTextEdit):
         self.setAlignment(Qt.AlignCenter)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setActive(False)
+        self.textChanged.connect(self.updateSize)
+
+    def setGeometry(self, x, y, width, height):
+        super().setGeometry(x, y, width, height)
+
+    def updateSize(self):
+        super().setGeometry(self.x(), self.y(), self.width(), self.height())
 
     # http://www.qtcentre.org/threads/20332-QGraphicsTextItem-and-text-cursor-position-via-QPoint
     def mousePressEvent(self, QMouseEvent):
@@ -32,8 +41,7 @@ class TodoTextWidget(QTextEdit):
         # Goddamn genius:
         super().mousePressEvent(QMouseEvent)
 
-    def setGeometry(self, anchor, x, y, width, height):
-        super().setGeometry(getAnchoredGeometryRect(x, y, width, height, anchor))
+
 
     def setActive(self, active):
         if active:
@@ -52,11 +60,10 @@ class TodoTextWidget(QTextEdit):
         super().setTextInteractionFlags(Qt.NoTextInteraction)
 
     def width(self):
-        return self.fontmetrics.width(self.toPlainText())
+        return self.fontmetrics.width(self.toPlainText()) + (2*self.margin)
 
     def height(self):
-        # 10 should become the margins.
-        return self.fontmetrics.height() + 10
+        return self.fontmetrics.height() + (2*self.margin)
 
     def textRect(self):
         return self.contentsRect()

@@ -1,5 +1,4 @@
-import TTConstants as TTC
-
+from ttcore import TodoItemState as TIS
 from TTGraphics import HollowRoundedRectanglePath, getAnchoredGeometryRect
 
 from PyQt5.QtCore import Qt, QTimer
@@ -19,8 +18,9 @@ class TodoIconWidget(QWidget):
 
     # rimsize = None
     curdonerim = 0
+    rimsize = 40
 
-    def __init__(self, parent, state = TTC.TodoItemState.TODO):
+    def __init__(self, parent, state = TIS.TODO):
         super().__init__(parent)
 
         self.__state = state
@@ -29,11 +29,11 @@ class TodoIconWidget(QWidget):
         self.updateTimer.timeout.connect(self.rimUpdate)
         self.updateTimer.start(10)
 
-    def setGeometry(self, anchor, x, y, width, height):
+    def setGeometry(self, x, y, width, height):
         self.todo_icon = HollowRoundedRectanglePath(width, height)
         self.done_icon = HollowRoundedRectanglePath(width, height, self.curdonerim)
 
-        super().setGeometry(getAnchoredGeometryRect(x,y,width,height,anchor))
+        super().setGeometry(x, y, width, height)
         self.show()
 
     def paintEvent(self, event):
@@ -50,22 +50,23 @@ class TodoIconWidget(QWidget):
         self.qpainter.end()
 
     def mousePressEvent(self, QMouseEvent):
-        if self.__state == TTC.TodoItemState.TODO:
-            self.__state = TTC.TodoItemState.DONE
-        elif self.__state == TTC.TodoItemState.DONE:
-            self.__state = TTC.TodoItemState.PARENTDONE
-        elif self.__state == TTC.TodoItemState.PARENTDONE:
-            self.__state = TTC.TodoItemState.TODO
+        print("Click!")
+        if self.__state == TIS.TODO:
+            self.__state = TIS.DONE
+        elif self.__state == TIS.DONE:
+            self.__state = TIS.PARENTDONE
+        elif self.__state == TIS.PARENTDONE:
+            self.__state = TIS.TODO
 
     def rimUpdate(self):
-        if self.__state == TTC.TodoItemState.DONE and self.curdonerim < 100:
+        if self.__state == TIS.DONE and self.curdonerim < 100:
             self.curdonerim += 5
-        elif self.__state == TTC.TodoItemState.TODO and self.curdonerim > 0:
+        elif self.__state == TIS.TODO and self.curdonerim > 0:
             self.curdonerim -= 5
-        elif self.__state == TTC.TodoItemState.PARENTDONE:
-            if self.curdonerim > TTC.ICON_RIM_SIZE:
+        elif self.__state == TIS.PARENTDONE:
+            if self.curdonerim > self.rimsize:
                 self.curdonerim -= 5
-            elif self.curdonerim < TTC.ICON_RIM_SIZE:
+            elif self.curdonerim < self.rimsize:
                 self.curdonerim += 5
 
         self.done_icon.updateRim(self.curdonerim)

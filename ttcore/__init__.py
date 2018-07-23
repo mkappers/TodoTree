@@ -1,1 +1,1 @@
-from ttcore.todoitem import TodoItem, TodoNode
+from ttcore.todoitem import TodoItemState, TodoItem, TodoNode

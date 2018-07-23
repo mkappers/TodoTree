@@ -5,7 +5,7 @@ import TTConstants as TTC
 
 from PyQt5.QtWidgets import QApplication
 
-from ttcore import TodoItem
+from ttcore import TodoItem, TodoItemState
 from ttgraphics.canvas import CanvasSystem
 from ttgraphics.TodoIconWidget import TodoIconWidget
 from ttgraphics.TodoItemWidget import TodoItemWidget
@@ -19,12 +19,11 @@ class TestGraphics:
         self.initLines()
 
     def initWidgets(self):
-        a = TodoIconWidget(self.canvas)
-        a.setGeometry(TTC.GeometryAnchor.CENTER, 100, 100, 40, 40)
+        done = TodoItemWidget(self.canvas, TodoItemState.DONE, "done", None, None, 100, 100)
+        todo = TodoItemWidget(self.canvas, TodoItemState.TODO, "todo", None, None, 300, 100)
+        pdone = TodoItemWidget(self.canvas, TodoItemState.PARENTDONE, "pdone", None, None, 500, 100)
 
-        b = TodoItemWidget(self.canvas, TodoItem(TTC.TodoItemState.DONE, "Henk"))
-        b.setPosition(300, 100, TTC.GeometryAnchor.CENTER)
-        b.show()
+        print(done.textwidget.document().documentMargin())
 
     def initPoints(self):
         self.canvas.addPointReference(Vector2(100,100))
