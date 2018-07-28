@@ -210,13 +210,13 @@ class TestVector2(unittest.TestCase):
         self.assertTrue(a.x == 1)
         self.assertTrue(a.y == 2)
 
-        a.setX(3)
-        a.setY(4)
+        a.set_x(3)
+        a.set_y(4)
 
         self.assertTrue(a.x == 3)
         self.assertTrue(a.y == 4)
 
-        a.setDimensions(5, 6)
+        a.set_dimensions(5, 6)
 
         self.assertTrue(a.x == 5)
         self.assertTrue(a.y == 6)

@@ -23,7 +23,7 @@ class Spring(Edge):
         self.stiffness = stiffness
         self.damping = damping
 
-    def getrestoringforce(self):
+    def get_restoring_force(self):
         displacement = self.edge.magnitude() - self.length
         unit = self.edge.normalize()
 
@@ -32,5 +32,5 @@ class Spring(Edge):
 
         return unit
 
-    def getdampingforce(self):
+    def get_damping_force(self):
         return self.edge.b.velocity * -self.damping

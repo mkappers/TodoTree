@@ -6,28 +6,28 @@ class System():
         self.nodes = []
         self.springs = []
 
-    def addNode(self, node):
+    def add_node(self, node):
         self.nodes.append(node)
 
-    def addNodeCollection(self, nodecollection):
+    def add_node_collection(self, nodecollection):
         for node in nodecollection:
             self.nodes.append(node)
 
-    def addSpring(self, spring):
+    def add_spring(self, spring):
         self.springs.append(spring)
 
-    def addSpringCollection(self, springcollection):
+    def add_spring_collection(self, springcollection):
         for spring in springcollection:
             self.springs.append(spring)
 
     def update(self, timestepinmilliseconds):
         tsinseconds = timestepinmilliseconds / 1000
 
-        self.applyHookesLaw(tsinseconds)
-        self.updateVelocity(tsinseconds)
-        self.updatePosition(tsinseconds)
+        self.apply_hookes_law(tsinseconds)
+        self.update_velocity(tsinseconds)
+        self.update_position(tsinseconds)
 
-    def applyHookesLaw(self, timestep, damping = True):
+    def apply_hookes_law(self, timestep, damping = True):
         for spring in self.springs:
             d = spring.edge.direction()
             displacement = d.magnitude() - spring.length
@@ -37,15 +37,15 @@ class System():
             if damping:
                 spring.b.acceleration += spring.b.velocity * -spring.damping
 
-    def applyRepulsion(self, timestep):
+    def apply_repulsion(self, timestep):
         for node in self.nodes:
             # Repulsion: smaller distance = larger repulsion between nodes
             pass
 
-    def updateVelocity(self, timestep):
+    def update_velocity(self, timestep):
         for node in self.nodes:
             node.velocity += (node.acceleration * timestep)
 
-    def updatePosition(self, timestep):
+    def update_position(self, timestep):
         for node in self.nodes:
             node.position += (node.velocity * timestep)

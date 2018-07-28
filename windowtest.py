@@ -37,13 +37,13 @@ class ParentWidget(QWidget):
         TodoItem(None, TTC.TodoItemState.TODO, "Test Todo Item", self)
         #self.ti = TodoItemWidget(self, TodoItem(description = "Henkie Sperma Tankie"))
         self.tempx = 150
-        #self.ti.setPosition(self.tempx,100,TTC.GeometryAnchor.TOP_CENTER)
+        #self.ti.set_position(self.tempx,100,TTC.GeometryAnchor.TOP_CENTER)
         #TodoItem(self, 600, 400, 60,60, 14, 14)
         self.show()
 
     def doUpdate(self):
         self.tempx += 0.5
-        self.ti.setPosition(self.tempx, 100, TTC.GeometryAnchor.TOP_CENTER)
+        self.ti.set_position(self.tempx, 100, TTC.GeometryAnchor.TOP_CENTER)
 
         self.update()
     # def updateStuff(self):

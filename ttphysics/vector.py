@@ -103,11 +103,11 @@ class Vector2(Vector):
     def y(self):
         return self.dimensions[1]
 
-    def setX(self, x):
+    def set_x(self, x):
         self.dimensions = (x, self.y)
 
-    def setY(self, y):
+    def set_y(self, y):
         self.dimensions = (self.x, y)
 
-    def setDimensions(self, x, y):
+    def set_dimensions(self, x, y):
         self.dimensions = (x, y)

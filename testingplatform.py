@@ -33,10 +33,10 @@ class TestingPlatform:
 
         # Create 2 physics nodes, 1 edge, and a spring
         self.node1 = self.physics.createNode()
-        self.node1.setPosition(100,100)
+        self.node1.set_position(100, 100)
 
         self.node2 = self.physics.createNode()
-        self.node2.setPosition(100,250)
+        self.node2.set_position(100, 250)
 
         self.edge12 = self.physics.createEdge(self.node1, self.node2)
         self.spring12 = self.physics.createSpring(self.edge12)
@@ -54,13 +54,13 @@ class TestingPlatform:
     def update(self):
         self.physics.update(20)
         #print("Accel: ", self.node2.acceleration)
-        #print("Damping: ", self.spring12.getdampingforce())
+        #print("Damping: ", self.spring12.get_damping_force())
         print("Node 2 position: ", self.node2.y)
         print("Node 2 velocity: ", self.node2.velocity)
         if self.spring12.edge.magnitude() < self.spring12.length:
-            print("Restoring force should be positive: ", self.spring12.getrestoringforce())
+            print("Restoring force should be positive: ", self.spring12.get_restoring_force())
         else:
-            print("Restoring force should be negative: ", self.spring12.getrestoringforce())
+            print("Restoring force should be negative: ", self.spring12.get_restoring_force())
         print("Spr. Length: ", self.spring12.edge.magnitude())
         self.canvas.update()
 

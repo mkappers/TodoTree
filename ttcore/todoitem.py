@@ -27,10 +27,10 @@ class TodoItem():
     def description(self):
         return self.__description
 
-    def setState(self, state):
+    def set_state(self, state):
         self.__state = state
 
-    def setDescription(self, description):
+    def set_description(self, description):
         self.__description = description
 
 

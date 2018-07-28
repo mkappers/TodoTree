@@ -27,7 +27,7 @@ class Node:
         if self.acceleration is None:
             self.acceleration = Vector2()
 
-    def applyForce(self, force):
+    def apply_force(self, force):
         """Apply force to this node.
 
         Keyword arguments:
@@ -36,15 +36,15 @@ class Node:
         if isinstance(force, Vector2):
             self.acceleration += force / self.mass
 
-    def setX(self, x):
-        self.position.setX(x)
+    def set_x(self, x):
+        self.position.set_x(x)
 
-    def setY(self, y):
-        self.position.setY(y)
+    def set_y(self, y):
+        self.position.set_y(y)
 
     def setPosition(self, x, y):
-        self.position.setX(x)
-        self.position.setY(y)
+        self.position.set_x(x)
+        self.position.set_y(y)
 
     @property
     def x(self):

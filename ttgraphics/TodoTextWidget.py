@@ -12,11 +12,10 @@ class TodoTextWidget(QTextEdit):
         super().__init__(parent)
         # Margin is only the first thing to remember, there's also line-breaks, line-distance,
         # word-wrap (and the empty space it creates), etc.
-        self.margin = self.document().documentMargin()
+        self.margin = 10 #self.document().documentMargin()
+        self.init_todo_text(text)
 
-        self.initTodoText(text)
-
-    def initTodoText(self, text):
+    def init_todo_text(self, text):
         qfm = QFontMetrics(self.font)
         print("Text width: ", qfm.width(text))
 
@@ -24,26 +23,25 @@ class TodoTextWidget(QTextEdit):
         self.setFont(self.font)
         self.setAlignment(Qt.AlignCenter)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.setActive(False)
-        self.textChanged.connect(self.updateSize)
 
-    def setGeometry(self, x, y, width, height):
-        super().setGeometry(x, y, width, height)
+        self.document().adjustSize()
+        self.set_active(False)
 
-    def updateSize(self):
+        self.textChanged.connect(self.update_size)
+
+    def setGeometry(self, x, y):
+        super().setGeometry(x, y, self.document().size().width(), self.document().size().height())
+
+    def update_size(self):
+        self.document().adjustSize()
         super().setGeometry(self.x(), self.y(), self.width(), self.height())
 
     # http://www.qtcentre.org/threads/20332-QGraphicsTextItem-and-text-cursor-position-via-QPoint
     def mousePressEvent(self, QMouseEvent):
-        self.setActive(True)
-        henk = super().textCursor()
-
-        # Goddamn genius:
+        self.set_active(True)
         super().mousePressEvent(QMouseEvent)
 
-
-
-    def setActive(self, active):
+    def set_active(self, active):
         if active:
             self.__activate()
         else:
@@ -60,10 +58,9 @@ class TodoTextWidget(QTextEdit):
         super().setTextInteractionFlags(Qt.NoTextInteraction)
 
     def width(self):
-        return self.fontmetrics.width(self.toPlainText()) + (2*self.margin)
+        return self.document().size().width()
+        #return self.fontmetrics.width(self.toPlainText()) + (2*self.margin)
 
     def height(self):
-        return self.fontmetrics.height() + (2*self.margin)
-
-    def textRect(self):
-        return self.contentsRect()
+        return self.document().size().height()
+        #return self.fontmetrics.height() + (2*self.margin)
