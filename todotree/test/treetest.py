@@ -1,5 +1,5 @@
 import unittest
-from ttcore.tree import TreeNode
+from core.tree import TreeNode
 
 class TestTree(unittest.TestCase):
     def test_init(self):

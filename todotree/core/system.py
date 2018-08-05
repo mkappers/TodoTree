@@ -1,4 +1,4 @@
-from ttcore.TodoItemCore import TodoItemCore
+from core.TodoItemCore import TodoItemCore
 
 # Is this class necessary? Maybe for search functions or sumt'n?
 

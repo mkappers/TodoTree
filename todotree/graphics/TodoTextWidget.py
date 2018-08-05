@@ -19,11 +19,14 @@ class TodoTextWidget(QTextEdit):
         qfm = QFontMetrics(self.font)
         print("Text width: ", qfm.width(text))
 
+        # Set text, font, alignment, scrollbar policy, and frame style
         self.setText(text)
         self.setFont(self.font)
         self.setAlignment(Qt.AlignCenter)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setFrameStyle(QFrame.NoFrame)
 
+        # Adjust textwidget size to text
         self.document().adjustSize()
         self.set_active(False)
 
@@ -48,13 +51,13 @@ class TodoTextWidget(QTextEdit):
             self.__deactivate()
 
     def __activate(self):
+        """Makes the text available for editing."""
         self.viewport().setAutoFillBackground(True)
         super().setTextInteractionFlags(Qt.TextEditorInteraction)
 
     def __deactivate(self):
+        """Makes the text uneditable."""
         self.viewport().setAutoFillBackground(False)
-        self.setFrameStyle(QFrame.NoFrame)
-
         super().setTextInteractionFlags(Qt.NoTextInteraction)
 
     def width(self):

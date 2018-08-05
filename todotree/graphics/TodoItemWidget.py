@@ -1,11 +1,7 @@
 #File containing the TodoItem class
 
-import TTConstants as TTC
-
-from ttcore import TodoItem
-from TTGraphics import getAnchoredGeometryRect
-from ttgraphics.TodoIconWidget import TodoIconWidget
-from ttgraphics.TodoTextWidget import TodoTextWidget
+from graphics.TodoIconWidget import TodoIconWidget
+from graphics.TodoTextWidget import TodoTextWidget
 
 from PyQt5.QtWidgets import QWidget
 
@@ -15,7 +11,7 @@ from PyQt5.QtWidgets import QWidget
 # Should just have Icon, State, and Text
 # TodoItemWidget anchor is center of icon
 
-from ttcore import TodoNode
+from core import TodoNode
 
 class TodoItemWidget(QWidget):
     iconsize = 30

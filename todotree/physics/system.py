@@ -37,6 +37,7 @@ class System():
             if damping:
                 spring.b.acceleration += spring.b.velocity * -spring.damping
 
+    # Coulomb's law? Isn't this a bit slow?
     def apply_repulsion(self, timestep):
         for node in self.nodes:
             # Repulsion: smaller distance = larger repulsion between nodes

@@ -1,5 +1,5 @@
 import unittest
-from ttcore.todoitem import TodoNode
+from core.todoitem import TodoNode
 
 class TestTodoNode(unittest.TestCase):
     def test_init(self):

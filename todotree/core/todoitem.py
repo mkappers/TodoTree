@@ -1,6 +1,6 @@
 from enum import Enum
 
-from ttcore.tree import TreeNode
+from core.tree import TreeNode
 
 class TodoItemState(Enum):
     TODO = 1

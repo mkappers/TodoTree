@@ -1,23 +1,26 @@
 # File for the spring class
 
 # Spring from one side?
+
+from physics import Vector2
+
 class Edge:
-    def __init__(self, a, b):
+    def __init__(self, a: Vector2, b: Vector2):
         self.a = a
         self.b = b
 
-    def magnitude(self):
+    def magnitude(self) -> float:
         return self.direction().magnitude()
 
-    def normalize(self):
+    def normalize(self) -> Vector2:
         return self.direction().normalize()
 
-    def direction(self):
+    def direction(self) -> Vector2:
         return self.b.position - self.a.position
 
 
 class Spring(Edge):
-    def __init__(self, a, b, length, stiffness = 1, damping = 1):
+    def __init__(self, a: Vector2, b: Vector2, length, stiffness = 1, damping = 1):
         super().__init__(self, a, b)
         self.length = length
         self.stiffness = stiffness

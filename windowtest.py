@@ -8,8 +8,8 @@
 import sys
 
 import TTConstants as TTC
-from ttcore.TodoItemOld import TodoItem
-from ttgraphics.TodoItemWidget import TodoItemWidget
+from core.TodoItemOld import TodoItem
+from graphics.TodoItemWidget import TodoItemWidget
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QWidget, QApplication
 

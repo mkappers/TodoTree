@@ -1,5 +1,5 @@
 import unittest
-from ttphysics import Vector, Vector2
+from physics import Vector, Vector2
 
 class TestVector(unittest.TestCase):
 

@@ -1,4 +1,4 @@
-from ttcore import TodoItemState as TIS
+from core import TodoItemState as TIS
 from TTGraphics import HollowRoundedRectanglePath, getAnchoredGeometryRect
 
 from PyQt5.QtCore import Qt, QTimer
@@ -26,15 +26,21 @@ class TodoIconWidget(QWidget):
         self.__state = state
 
         self.updateTimer.setSingleShot(False)
-        self.updateTimer.timeout.connect(self.rimUpdate)
+        self.updateTimer.timeout.connect(self.rim_update)
         self.updateTimer.start(10)
 
     def setGeometry(self, x, y, width, height):
+        self.width = width
+        self.height = height
+
         self.todo_icon = HollowRoundedRectanglePath(width, height)
         self.done_icon = HollowRoundedRectanglePath(width, height, self.curdonerim)
 
         super().setGeometry(x, y, width, height)
         self.show()
+
+    def set_position(self, x, y):
+        super().setGeometry(x, y, self.width, self.height)
 
     def paintEvent(self, event):
         self.qpainter.begin(self)
@@ -58,7 +64,7 @@ class TodoIconWidget(QWidget):
         elif self.__state == TIS.PARENTDONE:
             self.__state = TIS.TODO
 
-    def rimUpdate(self):
+    def rim_update(self):
         if self.__state == TIS.DONE and self.curdonerim < 100:
             self.curdonerim += 5
         elif self.__state == TIS.TODO and self.curdonerim > 0:
@@ -71,6 +77,10 @@ class TodoIconWidget(QWidget):
 
         self.done_icon.updateRim(self.curdonerim)
         self.update()
+
+    def set_size(self, width, height):
+        self.width = width
+        self.height = height
 
     def size(self):
         return self.__size
