@@ -1,7 +1,7 @@
 #File containing the TodoItem class
 
-from graphics.TodoIconWidget import TodoIconWidget
-from graphics.TodoTextWidget import TodoTextWidget
+from todotree.graphics.TodoIconWidget import TodoIconWidget
+from todotree.graphics.TodoTextWidget import TodoTextWidget
 
 from PyQt5.QtWidgets import QWidget
 
@@ -11,11 +11,9 @@ from PyQt5.QtWidgets import QWidget
 # Should just have Icon, State, and Text
 # TodoItemWidget anchor is center of icon
 
-from core import TodoNode
+from todotree.core import TodoNode
 
 class TodoItemWidget(QWidget):
-    iconsize = 30
-
     def __init__(self, parent, state, description, nodeparent, nodechildren, x, y):
         super().__init__(parent)
 
@@ -40,21 +38,13 @@ class TodoItemWidget(QWidget):
         return cls(parent, todonode.state, todonode.description, todonode.parent, todonode.children)
 
     def set_position(self, x, y):
-        width = max(self.iconsize, self.textwidget.width())
-        height = self.iconsize + self.textwidget.height() + 4
+        width = max(self.iconwidget.side_length, self.textwidget.width())
+        height = self.iconwidget.side_length + self.textwidget.height() + 4
 
-        #self.iconwidget.setGeometry(0, 0, self.iconsize, self.iconsize)
-        self.iconwidget.setGeometry((width / 2) - (self.iconsize / 2), 0, self.iconsize, self.iconsize)
-        self.textwidget.setGeometry((width / 2) - (self.textwidget.width() / 2), self.iconsize + 4)
+        self.iconwidget.move((width / 2) - (self.iconwidget.side_length / 2), 0)
+        self.textwidget.setGeometry((width / 2) - (self.textwidget.width() / 2), self.iconwidget.side_length + 4)
 
-        super().setGeometry(x - (width / 2), y - (self.iconsize / 2), width, height)
-
-    # def __update_size(self):
-    #     ir = self.icon.geometry()
-    #     tr = self.text.geometry()
-    #
-    #     self.width = max(ir.width(), tr.width())
-    #     self.height = max(ir.height(), tr.height())
+        self.move(x,y)
 
     def update_text_widget_size(self):
         self.set_position(self.ox, self.oy)

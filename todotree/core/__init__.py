@@ -1,1 +1,1 @@
-from core.todoitem import TodoItemState, TodoItem, TodoNode
+from todotree.core.todoitem import TodoItemState, TodoItem, TodoNode

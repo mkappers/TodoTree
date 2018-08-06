@@ -3,7 +3,7 @@
 # So, if these nodes contain the TodoItems then:
 #   Node position -> TI position
 #   In other words, update here is update there.
-from physics.vector import Vector2
+from todotree.physics.vector import Vector2
 
 class Node:
     def __init__(self, mass = 1, position = None, velocity = None, acceleration = None):

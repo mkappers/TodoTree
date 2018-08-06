@@ -2,7 +2,7 @@
 
 # Spring from one side?
 
-from physics import Vector2
+from todotree.physics import Vector2
 
 class Edge:
     def __init__(self, a: Vector2, b: Vector2):

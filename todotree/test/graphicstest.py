@@ -1,24 +1,24 @@
 import sys
-import unittest
+sys.path.append(r"C:\Users\Maurits\Python\Projects\TodoTree")
 
-import TTConstants as TTC
+import unittest
 
 from PyQt5.QtWidgets import QApplication
 
-from core import TodoItem, TodoItemState
-from graphics.canvas import CanvasSystem
-from graphics.TodoItemWidget import TodoItemWidget
-from graphics.TodoIconWidget import TodoIconWidget
-from graphics.widgetPositionWrapper import RenderPositionWrapper, HorizontalAnchor, VerticalAnchor
-from physics import Vector2, Edge
+from todotree.core import TodoItem, TodoItemState
+from todotree.graphics.canvas import CanvasSystem
+from todotree.graphics.TodoItemWidget import TodoItemWidget
+from todotree.graphics.TodoIconWidget import TodoIconWidget
+from todotree.graphics.widgetPositionWrapper import AnchorPositionWrapper, HorizontalAnchor, VerticalAnchor
+from todotree.physics import Vector2, Edge
 
 class TestGraphics:
     def __init__(self):
         self.canvas = CanvasSystem(width = 600, height = 400)
         self.init_widgets()
         self.init_position_wrappers()
-        self.init_points()
-        self.init_lines()
+        # self.init_points()
+        # self.init_lines()
 
     def init_widgets(self):
         done = TodoItemWidget(self.canvas, TodoItemState.DONE, "done", None, None, 100, 100)
@@ -29,12 +29,13 @@ class TestGraphics:
 
     def init_position_wrappers(self):
         icon = TodoIconWidget(None)
-        icon.setGeometry(0,0, 40, 40)
-        wrapper = RenderPositionWrapper(self.canvas, icon)
-        icon.setParent(wrapper)
+        icon2 = TodoIconWidget(None, TodoItemState.DONE)
+        wrapper = AnchorPositionWrapper(self.canvas, icon)
+        wrapper2 = AnchorPositionWrapper.with_anchor(self.canvas, icon2, HorizontalAnchor.RIGHT, VerticalAnchor.BOTTOM)
 
-        wrapper.set_render_anchor(HorizontalAnchor.CENTER, VerticalAnchor.TOP)
-        wrapper.set_position(100, 300)
+        wrapper.set_render_anchor(HorizontalAnchor.CENTER, VerticalAnchor.CENTER)
+        wrapper.move(100, 300)
+        wrapper2.move(20, 300)
 
     def init_points(self):
         self.canvas.addPointReference(Vector2(100,100))

@@ -15,31 +15,39 @@ class VerticalAnchor(Enum):
     BOTTOM = 3
 
 
-class RenderPositionWrapper(QWidget):
+class AnchorPositionWrapper(QWidget):
     def __init__(self, parent, widget: QWidget):
         super().__init__(parent)
         self.widget = widget
-        self.widget.setGeometry(0,0,self.widget.width, self.widget.height)
+        self.widget.setParent(self)
+        self.widget.move(0, 0)
 
         self.x_function = lambda x: x
         self.y_function = lambda y: y
 
-    def set_position(self, x, y):
-        self.setGeometry(self.x_function(x), self.y_function(y), self.widget.width, self.widget.height)
+    @classmethod
+    def with_anchor(cls, parent, widget: QWidget, horizontal: HorizontalAnchor, vertical: VerticalAnchor):
+        returnWrapper = cls(parent, widget)
+        returnWrapper.set_render_anchor(horizontal, vertical)
+        return returnWrapper
+
+    def move(self, x, y):
+        super().move(self.x_function(x), self.y_function(y))
+        print("Size: ", self.geometry())
         self.show()
 
     def set_render_anchor(self, horizontal: HorizontalAnchor, vertical: VerticalAnchor):
         if (horizontal == HorizontalAnchor.CENTER):
-            self.x_function = lambda x: x - (self.widget.width / 2)
+            self.x_function = lambda x: x - (self.widget.width() / 2)
         elif(horizontal == HorizontalAnchor.RIGHT):
-            self.x_function = lambda x: x - (self.widget.width)
+            self.x_function = lambda x: x - (self.widget.width())
         else:
             self.x_function = lambda x: x
 
         if (vertical == VerticalAnchor.CENTER):
-            self.y_function = lambda y: y - (self.widget.height / 2)
+            self.y_function = lambda y: y - (self.widget.height() / 2)
         elif (vertical == VerticalAnchor.BOTTOM):
-            self.y_function = lambda y: y - (self.widget.height)
+            self.y_function = lambda y: y - (self.widget.height())
         else:
             self.y_function = lambda y: y
 
