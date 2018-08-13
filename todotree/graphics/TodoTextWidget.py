@@ -1,43 +1,33 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QFont, QFontMetrics
 from PyQt5.QtWidgets import QTextEdit, QFrame
 
 from TTGraphics import getAnchoredGeometryRect
 
 class TodoTextWidget(QTextEdit):
-    font = QFont("Century Gothic", 12, QFont.Medium)
-    fontmetrics = QFontMetrics(font)
+    resized = pyqtSignal()
 
     def __init__(self, parent, text):
         super().__init__(parent)
-        # Margin is only the first thing to remember, there's also line-breaks, line-distance,
-        # word-wrap (and the empty space it creates), etc.
-        self.margin = 10 #self.document().documentMargin()
-        self.init_todo_text(text)
-
-    def init_todo_text(self, text):
-        qfm = QFontMetrics(self.font)
-        print("Text width: ", qfm.width(text))
 
         # Set text, font, alignment, scrollbar policy, and frame style
         self.setText(text)
-        self.setFont(self.font)
+        self.setFont(QFont("Century Gothic", 12, QFont.Medium))
         self.setAlignment(Qt.AlignCenter)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setFrameStyle(QFrame.NoFrame)
 
         # Adjust textwidget size to text
-        self.document().adjustSize()
+        self.update_size()
         self.set_active(False)
 
         self.textChanged.connect(self.update_size)
 
-    def setGeometry(self, x, y):
-        super().setGeometry(x, y, self.document().size().width(), self.document().size().height())
-
     def update_size(self):
+        """Sets widget size to be equal to (encapsulated) document size."""
         self.document().adjustSize()
-        super().setGeometry(self.x(), self.y(), self.width(), self.height())
+        self.resize(self.width(), self.height())
+        self.resized.emit()
 
     # http://www.qtcentre.org/threads/20332-QGraphicsTextItem-and-text-cursor-position-via-QPoint
     def mousePressEvent(self, QMouseEvent):
@@ -62,8 +52,6 @@ class TodoTextWidget(QTextEdit):
 
     def width(self):
         return self.document().size().width()
-        #return self.fontmetrics.width(self.toPlainText()) + (2*self.margin)
 
     def height(self):
         return self.document().size().height()
-        #return self.fontmetrics.height() + (2*self.margin)

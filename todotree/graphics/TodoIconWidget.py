@@ -1,11 +1,13 @@
 from todotree.core import TodoItemState as TIS
 from TTGraphics import HollowRoundedRectanglePath, getAnchoredGeometryRect
 
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, pyqtSignal
 from PyQt5.QtGui import QPainter, QColor, QPen
 from PyQt5.QtWidgets import QWidget
 
 class TodoIconWidget(QWidget):
+    resized = pyqtSignal()
+
     def __init__(self, parent, state = TIS.TODO, side_length = 40):
         super().__init__(parent)
 
@@ -14,7 +16,7 @@ class TodoIconWidget(QWidget):
 
         self.todo_icon = HollowRoundedRectanglePath(self.side_length, self.side_length)
         self.done_icon = HollowRoundedRectanglePath(self.side_length, self.side_length, self.curdonerim)
-        
+
         self.state = state
         self.qpainter = QPainter()
         self.set_update_timer(10)
@@ -25,6 +27,7 @@ class TodoIconWidget(QWidget):
 
     def set_size(self, side_length):
         self.resize(side_length, side_length)
+        self.resized.emit()
 
     def paintEvent(self, event):
         self.qpainter.begin(self)

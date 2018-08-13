@@ -20,7 +20,7 @@ class TreeNode():
 
     # TODO Magic methods (eq etc), add children, size, add branch, pruning, and more.
     def appendChild(self, child):
-        """Append a child to this node.
+        """Append a child to this node's children list.
 
         Keyword arguments:
         child -- the child to append
