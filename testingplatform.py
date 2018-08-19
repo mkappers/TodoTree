@@ -3,8 +3,8 @@ import sys
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QApplication
 
-from core.system import CoreSystem
-from graphics.canvas import CanvasSystem
+from todotree.core import CoreSystem
+from todotree.graphics import CanvasSystem
 
 class TestingPlatform:
     def __init__(self):
@@ -55,8 +55,8 @@ class TestingPlatform:
         self.physics.update(20)
         #print("Accel: ", self.node2.acceleration)
         #print("Damping: ", self.spring12.get_damping_force())
-        print("Node 2 position: ", self.node2.y)
-        print("Node 2 velocity: ", self.node2.velocity)
+        print("PhysicsNode 2 position: ", self.node2.y)
+        print("PhysicsNode 2 velocity: ", self.node2.velocity)
         if self.spring12.edge.magnitude() < self.spring12.length:
             print("Restoring force should be positive: ", self.spring12.get_restoring_force())
         else:

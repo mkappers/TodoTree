@@ -2,9 +2,9 @@
 
 import math
 
-from todotree.graphics.TodoIconWidget import TodoIconWidget
-from todotree.graphics.TodoTextWidget import TodoTextWidget
-from todotree.graphics.widgetPositionWrapper import AnchorPositionWrapper, HorizontalAnchor, VerticalAnchor
+from todotree.graphics.todoiconwidget import TodoIconWidget
+from todotree.graphics.todotextwidget import TodoTextWidget
+from todotree.graphics.anchor_position_wrapper import AnchoredWidgetWrapper, HorizontalAnchor, VerticalAnchor
 
 from PyQt5.QtCore import QEvent, pyqtSignal
 from PyQt5.QtWidgets import QWidget
@@ -24,8 +24,8 @@ class TodoItemWidget(QWidget):
         super().__init__(parent)
 
         self.todonode = TodoNode(state, description, nodeparent, nodechildren)
-        self.icon = AnchorPositionWrapper.with_anchor(self, TodoIconWidget(None, state), HorizontalAnchor.CENTER, VerticalAnchor.TOP)
-        self.text = AnchorPositionWrapper.with_anchor(self, TodoTextWidget(None, description), HorizontalAnchor.CENTER, VerticalAnchor.TOP)
+        self.icon = AnchoredWidgetWrapper.with_anchor(self, TodoIconWidget(None, state), HorizontalAnchor.CENTER, VerticalAnchor.TOP)
+        self.text = AnchoredWidgetWrapper.with_anchor(self, TodoTextWidget(None, description), HorizontalAnchor.CENTER, VerticalAnchor.TOP)
 
         self.icon.resized.connect(self.resize_to_children)
         self.text.resized.connect(self.resize_to_children)

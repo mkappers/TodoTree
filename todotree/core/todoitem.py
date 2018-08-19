@@ -9,7 +9,7 @@ class TodoItemState(Enum):
 
 
 class TodoItem():
-    def __init__(self, state = TodoItemState.DONE, description = None):
+    def __init__(self, state: TodoItemState = TodoItemState.DONE, description = None):
         """Initialize a TodoItem.
 
         Keyword arguments:
@@ -35,6 +35,6 @@ class TodoItem():
 
 
 class TodoNode(TodoItem, TreeNode):
-    def __init__(self, state = None, description = None, parent = None, children = None):
+    def __init__(self, state: TodoItemState = None, description = None, parent = None, children = None):
         TodoItem.__init__(self, state, description)
         TreeNode.__init__(self, parent, children)

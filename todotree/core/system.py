@@ -1,4 +1,4 @@
-from core.TodoItemCore import TodoItemCore
+from todotree.core import TodoItemCore
 
 # Is this class necessary? Maybe for search functions or sumt'n?
 

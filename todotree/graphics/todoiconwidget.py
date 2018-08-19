@@ -1,4 +1,4 @@
-from todotree.core import TodoItemState as TIS
+from todotree.core import TodoItemState
 from TTGraphics import HollowRoundedRectanglePath, getAnchoredGeometryRect
 
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal
@@ -7,8 +7,9 @@ from PyQt5.QtWidgets import QWidget
 
 class TodoIconWidget(QWidget):
     resized = pyqtSignal()
+    state_changed = pyqtSignal()
 
-    def __init__(self, parent, state = TIS.TODO, side_length = 40):
+    def __init__(self, parent, state = TodoItemState.TODO, side_length = 40):
         super().__init__(parent)
 
         self.curdonerim = 0
@@ -44,19 +45,23 @@ class TodoIconWidget(QWidget):
 
     def mousePressEvent(self, QMouseEvent):
         print("Click!")
-        if self.state == TIS.TODO:
-            self.state = TIS.DONE
-        elif self.state == TIS.DONE:
-            self.state = TIS.PARENTDONE
-        elif self.state == TIS.PARENTDONE:
-            self.state = TIS.TODO
+        if self.state == TodoItemState.TODO:
+            self.set_state(TodoItemState.DONE)
+        elif self.state == TodoItemState.DONE:
+            self.set_state(TodoItemState.PARENTDONE)
+        elif self.state == TodoItemState.PARENTDONE:
+            self.set_state(TodoItemState.TODO)
+    
+    def set_state(self, state: TodoItemState):
+        self.state = state
+        self.state_changed.emit()
 
     def rim_update(self):
-        if self.state == TIS.DONE and self.curdonerim < 100:
+        if self.state == TodoItemState.DONE and self.curdonerim < 100:
             self.curdonerim += 5
-        elif self.state == TIS.TODO and self.curdonerim > 0:
+        elif self.state == TodoItemState.TODO and self.curdonerim > 0:
             self.curdonerim -= 5
-        elif self.state == TIS.PARENTDONE:
+        elif self.state == TodoItemState.PARENTDONE:
             if self.curdonerim > self.side_length:
                 self.curdonerim -= 5
             elif self.curdonerim < self.side_length:

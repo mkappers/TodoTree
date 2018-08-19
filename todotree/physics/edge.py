@@ -2,10 +2,12 @@
 
 # Spring from one side?
 
-from todotree.physics import Vector2
+
+
+from todotree.physics import Vector2, PhysicsNode
 
 class Edge:
-    def __init__(self, a: Vector2, b: Vector2):
+    def __init__(self, a: PhysicsNode, b: PhysicsNode):
         self.a = a
         self.b = b
 
@@ -18,17 +20,18 @@ class Edge:
     def direction(self) -> Vector2:
         return self.b.position - self.a.position
 
+# Currently only effects self. Damping force only pulls from B
 
 class Spring(Edge):
-    def __init__(self, a: Vector2, b: Vector2, length, stiffness = 1, damping = 1):
-        super().__init__(self, a, b)
+    def __init__(self, a: PhysicsNode, b: PhysicsNode, length, stiffness = 1, damping = 1):
+        super().__init__(a, b)
         self.length = length
         self.stiffness = stiffness
         self.damping = damping
 
     def get_restoring_force(self):
-        displacement = self.edge.magnitude() - self.length
-        unit = self.edge.normalize()
+        displacement = self.magnitude() - self.length
+        unit = self.normalize()
 
         # Hooke's Law: F = kD, where k = stiffness, and D = displacement
         unit *= (-self.stiffness * displacement)
@@ -36,4 +39,4 @@ class Spring(Edge):
         return unit
 
     def get_damping_force(self):
-        return self.edge.b.velocity * -self.damping
+        return self.b.velocity * -self.damping

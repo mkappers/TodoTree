@@ -21,21 +21,32 @@ class System():
             self.springs.append(spring)
 
     def update(self, timestepinmilliseconds):
-        tsinseconds = timestepinmilliseconds / 1000
-
-        self.apply_hookes_law(tsinseconds)
-        self.update_velocity(tsinseconds)
-        self.update_position(tsinseconds)
+        #try:
+            tsinseconds = timestepinmilliseconds / 1000
+            for node in self.nodes:
+                node.acceleration.set_dimensions(0,0)
+            self.apply_hookes_law(tsinseconds)
+            self.update_nodes(tsinseconds)
+        #except:
+        #    print("Error during physics system update")
 
     def apply_hookes_law(self, timestep, damping = True):
+        print("Springs: ", str(self.springs))
         for spring in self.springs:
-            d = spring.edge.direction()
-            displacement = d.magnitude() - spring.length
-            unit = d.normalize()
+            try:
+                d = spring.direction()
+                displacement = d.magnitude() - spring.length
+                unit = d.normalize()
 
-            spring.b.acceleration = (unit * (-spring.stiffness * displacement))
-            if damping:
-                spring.b.acceleration += spring.b.velocity * -spring.damping
+                # Following line affects the spring's B node
+                spring.b.apply_force(unit * (-spring.stiffness * displacement))
+                if damping:
+                    spring.b.apply_force(spring.b.velocity * -spring.damping)
+            except Exception as err:
+                raise RuntimeError("Error during spring update: ", str(err))
+            except:
+                print("Unidentified error during spring update")
+
 
     # Coulomb's law? Isn't this a bit slow?
     def apply_repulsion(self, timestep):
@@ -43,10 +54,13 @@ class System():
             # Repulsion: smaller distance = larger repulsion between nodes
             pass
 
-    def update_velocity(self, timestep):
+    def update_nodes(self, timestep):
+        print("Nodes: ", str(self.nodes))
         for node in self.nodes:
-            node.velocity += (node.acceleration * timestep)
-
-    def update_position(self, timestep):
-        for node in self.nodes:
-            node.position += (node.velocity * timestep)
+            try:
+                node.update_properties(timestep)
+                node.update_wrapper_position()
+            except Exception as err:
+                raise RuntimeError("Error during node update: ", str(err))
+            except:
+                print("Unidentified error during node update")

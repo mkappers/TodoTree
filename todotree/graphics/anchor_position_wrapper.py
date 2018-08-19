@@ -1,27 +1,14 @@
 import math
 
-from PyQt5.QtCore import QEvent, pyqtSignal
+from todotree.graphics import HorizontalAnchor, VerticalAnchor
+from PyQt5.QtCore import pyqtSignal, QPoint
 from PyQt5.QtWidgets import QWidget
 
-from enum import Enum
 
+class AnchoredWidgetWrapper(QWidget):
+    """AnchoredWidgetWrapper(QWidget)
 
-class HorizontalAnchor(Enum):
-    LEFT = 1
-    CENTER = 2
-    RIGHT = 3
-
-
-class VerticalAnchor(Enum):
-    TOP = 1
-    CENTER = 2
-    BOTTOM = 3
-
-
-class AnchorPositionWrapper(QWidget):
-    """AnchorPositionWrapper(QWidget)
-
-    An AnchorPositionWrapper instance has no size of its own, it will always have the size of its childrenRect().
+    An AnchoredWidgetWrapper instance has no size of its own, it will always have the size of its childrenRect().
     """
     resized = pyqtSignal()
 
@@ -33,8 +20,7 @@ class AnchorPositionWrapper(QWidget):
         self.widget.move(0, 0)
         self.widget.resized.connect(self.resize_to_widget)
 
-        self.anchor_x = 0
-        self.anchor_y = 0
+        self.anchor = QPoint(0, 0)
 
         self.x_function = lambda x: x
         self.y_function = lambda y: y
@@ -47,15 +33,18 @@ class AnchorPositionWrapper(QWidget):
 
         return returnWrapper
 
+    def get_position(self):
+        return self.anchor
+
     def move(self, x, y):
-        self.anchor_x = x
-        self.anchor_y = y
+        self.anchor.setX(x)
+        self.anchor.setY(y)
 
         super().move(self.x_function(x), self.y_function(y))
 
     def resize_to_widget(self):
         self.resize(self.childrenRect().size())
-        self.move(self.anchor_x, self.anchor_y)
+        self.move(self.anchor.x(), self.anchor.y())
         self.resized.emit()
 
     def set_render_anchor(self, horizontal: HorizontalAnchor, vertical: VerticalAnchor):
